@@ -5,6 +5,8 @@ import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:equatable/equatable.dart';
 import 'package:http/http.dart' as http;
+import 'package:moviedb_test/models/movelist_model.dart';
+import 'package:moviedb_test/models/movies_model.dart';
 import 'package:stream_transform/stream_transform.dart';
 
 part 'movielist_event.dart';
@@ -18,8 +20,8 @@ EventTransformer<E> throttleDroppable<E>(Duration duration) {
   };
 }
 
-class PostBloc extends Bloc<MovielistEvent, MovielistState> {
-  PostBloc({required this.httpClient}) : super(const MovielistState()) {
+class MovielistBloc extends Bloc<MovielistEvent, MovielistState> {
+  MovielistBloc({required this.httpClient}) : super(const MovielistState()) {
     on<MovieListFetch>(
       _onMovieListFetch,
       transformer: throttleDroppable(throttleDuration),
@@ -34,19 +36,22 @@ class PostBloc extends Bloc<MovielistEvent, MovielistState> {
   ) async {
     if (state.hasReachedMax) return;
     try {
-      if (state.status == MovielistStatus.initial) {
-        final results = await _fetchMovies();
-        // return emit(state.copyWith(
-        //   status: MovielistStatus.success,
-        //   hasReachedMax: false,
-        // ));
-      }
-      // final posts = await _fetchMovies(state.results.length);
+      // if (state.status == MovielistStatus.initial) {
+      //   final results = await _fetchMovies();
+      //   print(results);
+      //   return emit(state.copyWith(
+      //     status: MovielistStatus.success,
+      //     resultMovies: results,
+      //     hasReachedMax: false,
+      //   ));
+      // }
+      // final results = await _fetchMovies(state.resultMovies.length);
       // results.isEmpty
       //     ? emit(state.copyWith(hasReachedMax: true))
       //     : emit(
       //         state.copyWith(
       //           status: MovielistStatus.success,
+      //           resultMovies: results,
       //           hasReachedMax: false,
       //         ),
       //       );
@@ -55,7 +60,7 @@ class PostBloc extends Bloc<MovielistEvent, MovielistState> {
     }
   }
 
-  Future<List> _fetchMovies([int startPage = 1]) async {
+  Future<List<MoviesModel>> _fetchMovies([int startPage = 1]) async {
     final response = await httpClient.get(
       Uri.https(
         'api.themoviedb.org',
@@ -66,13 +71,12 @@ class PostBloc extends Bloc<MovielistEvent, MovielistState> {
         },
       ),
     );
+
     // print(response.body);
     if (response.statusCode == 200) {
       final body = json.decode(response.body);
-      print(body);
-      // return body.map((dynamic json) {
 
-      // }).toList();
+      return body.map((dynamic json) {}).toList();
     }
     throw Exception('error fetching posts');
   }
