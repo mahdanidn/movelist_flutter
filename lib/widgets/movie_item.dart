@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:moviedb_test/bloc/moviedetail_bloc/moviedetail_bloc.dart';
+import 'package:moviedb_test/bloc/movielist_bloc/movielist_bloc.dart';
 import 'package:moviedb_test/models/movelist_model.dart';
 import 'package:moviedb_test/screen/movie_detail.dart';
 
@@ -20,7 +22,6 @@ class MovieItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
     return Card(
       elevation: 5.0,
       shape: RoundedRectangleBorder(
@@ -37,7 +38,7 @@ class MovieItem extends StatelessWidget {
               ),
               image: DecorationImage(
                 image: NetworkImage(
-                    'https://image.tmdb.org/t/p/original/${posterImage}'),
+                    'https://image.tmdb.org/t/p/original/$posterImage'),
                 fit: BoxFit.cover,
               ),
             ),
@@ -78,9 +79,10 @@ class MovieItem extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => MovieDetail(
-                                    movieId: id.toString(),
-                                  )),
+                            builder: (context) => MovieDetail(
+                              movieId: id.toString(),
+                            ),
+                          ),
                         );
                       },
                     ),

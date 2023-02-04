@@ -4,20 +4,22 @@ import 'package:moviedb_test/bloc/movielist_bloc/movielist_bloc.dart';
 import 'package:moviedb_test/screen/movie_listdata.dart';
 import 'package:http/http.dart' as http;
 
-class ListMovie extends StatefulWidget {
-  const ListMovie({super.key});
+class MovieHome extends StatefulWidget {
+  const MovieHome({super.key});
 
   @override
-  State<ListMovie> createState() => _ListMovieState();
+  State<MovieHome> createState() => _MovieHomeState();
 }
 
-class _ListMovieState extends State<ListMovie> {
+class _MovieHomeState extends State<MovieHome> {
   int _selectedIndex = 0;
 
   static const List<Widget> _widgetOptions = <Widget>[
     MovieListData(),
-    Text(
-      'Hai',
+    Center(
+      child: Text(
+        'Movie List Favorite',
+      ),
     ),
   ];
 
